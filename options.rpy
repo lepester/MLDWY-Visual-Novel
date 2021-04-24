@@ -12,7 +12,7 @@
 ##
 ## Символы "_()", окружающие название, отмечают его как пригодное для перевода.
 
-define config.name = _("My Last Days With You")
+#define config.name = _("My Last Days With You")
 
 
 ## Определяет, показывать ли заголовок, данный выше, на экране главного меню.
@@ -23,7 +23,7 @@ define gui.show_name = True
 
 ## Версия игры.
 
-define config.version = "1.0"
+define config.version = "v0.10.0.1610-1812 Pre_Alpha_Build"
 
 
 ## Текст, помещённый в экран "Об игре". Поместите текст между тройными скобками.
@@ -62,7 +62,7 @@ define config.has_voice = True
 ## проигрываться в главном меню. Этот файл продолжит проигрываться во время
 ## игры, если не будет остановлен, или не начнёт проигрываться другой аудиофайл.
 
-# define config.main_menu_music = "main-menu-theme.ogg"
+define config.main_menu_music = "music/mtheme_2.mp3"
 
 
 ## Переходы ####################################################################
@@ -73,23 +73,23 @@ define config.has_voice = True
 
 ## Вход и выход в игровое меню.
 
-define config.enter_transition = dissolve
-define config.exit_transition = dissolve
+define config.enter_transition = Dissolve(0.3)
+define config.exit_transition = Dissolve(0.3)
 
 
 ## Переход между экранами игрового меню.
 
-define config.intra_transition = dissolve
+define config.intra_transition = Dissolve(0.2)
 
 
 ## Переход, используемый после загрузки слота сохранения.
 
-define config.after_load_transition = None
+define config.after_load_transition = Fade(0.5, 1.5, 0.5)
 
 
 ## Используется при входе в главное меню после того, как игра закончится.
 
-define config.end_game_transition = None
+define config.end_game_transition = dissolve
 
 
 ## Переменная, устанавливающая переход, когда старт игры не существует. Вместо

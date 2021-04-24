@@ -4,7 +4,12 @@
 
 init offset = -1
 
+init python:
+     style.default.outlines = [ (2, "#000000", 0, 0),  ]
 
+#init python:
+    # mr = MusicRoom(fadeout=1.0)
+     #mr.add("music/Click1.ogg")
 ################################################################################
 ## Стили
 ################################################################################
@@ -44,6 +49,8 @@ style bar:
     ysize gui.bar_size
     left_bar Frame("gui/bar/left.png", gui.bar_borders, tile=gui.bar_tile)
     right_bar Frame("gui/bar/right.png", gui.bar_borders, tile=gui.bar_tile)
+
+
 
 style vbar:
     xsize gui.bar_size
@@ -93,6 +100,34 @@ style frame:
 ## применить к ним настройки стиля.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#say
+#screen music_room:
+    #tag menu
+
+    #frame:
+        #has vbox
+
+        # The buttons that play each track.
+        #textbutton "Начать" action mr.Play("Click1.ogg")
+        #textbutton "Track 2" action mr.Play("track2.ogg")
+        #textbutton "Track 3" action mr.Play("track3.ogg")
+
+        #null height 20
+
+        # Buttons that let us advance tracks.
+        #textbutton "Next" action mr.Next()
+        #textbutton "Previous" action mr.Previous()
+
+    #    null height 20
+
+        # The button that lets the user exit the music room.
+        #textbutton "Main Menu" action ShowMenu("main_menu")
+
+    # Start the music playing on entry to the music room.
+    #on "replace" action mr.Play()
+
+    # Restore the main menu music upon leaving.
+    #on "replaced" action Play("music", "track1.ogg")
+
 
 screen say(who, what):
     style_prefix "say"
@@ -253,14 +288,15 @@ screen quick_menu():
             xalign 0.5
             yalign 1.0
 
-            textbutton _("Назад") action Rollback()
+            #textbutton _("Назад") action Rollback()
             textbutton _("История") action ShowMenu('history')
             textbutton _("Пропуск") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("Авто") action Preference("auto-forward", "toggle")
             textbutton _("Сохранить") action ShowMenu('save')
-            textbutton _("Б.Сохр") action QuickSave()
-            textbutton _("Б.Загр") action QuickLoad()
-            textbutton _("Опции") action ShowMenu('preferences')
+            textbutton _("Загрузить") action ShowMenu('load')
+            #textbutton _("Б.Сохр") action QuickSave()
+            #textbutton _("Б.Загр") action QuickLoad()
+            textbutton _("Настройки") action ShowMenu('preferences')
 
 
 ## Данный код гарантирует, что экран быстрого меню будет показан в игре в любое
@@ -291,27 +327,32 @@ style quick_button_text:
 
 screen navigation():
 
+
     vbox:
         style_prefix "navigation"
 
         xpos gui.navigation_xpos
-        yalign 0.5
+        yalign 0.8
 
         spacing gui.navigation_spacing
 
+
         if main_menu:
 
-            textbutton _("Начать") action Start()
+            textbutton _("Начать") action [Play("sound", "music/click.ogg"), Start() ]
+
+
 
         else:
 
-            textbutton _("История") action ShowMenu("history")
+            textbutton _("История") action [Play("sound", "music/click.ogg"),ShowMenu("history") ]
 
-            textbutton _("Сохранить") action ShowMenu("save")
+            textbutton _("Сохранить") action [Play("sound", "music/click6.ogg"), ShowMenu("save") ]
 
-        textbutton _("Загрузить") action ShowMenu("load")
+        textbutton _("Загрузить") action [Play("sound", "music/click3.ogg"), ShowMenu("load") ]
 
-        textbutton _("Настройки") action ShowMenu("preferences")
+        textbutton _("Настройки") action [Play("sound", "music/click2.ogg"), ShowMenu("preferences") ]
+
 
         if _in_replay:
 
@@ -319,20 +360,20 @@ screen navigation():
 
         elif not main_menu:
 
-            textbutton _("Главное меню") action MainMenu()
+            textbutton _("Главное меню") action [Play("sound", "music/click5.ogg"), MainMenu() ]
 
-        textbutton _("Об игре") action ShowMenu("about")
+        #textbutton _("Об игре") action ShowMenu("about")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## Помощь не необходима и не относится к мобильным устройствам.
-            textbutton _("Помощь") action ShowMenu("help")
+            textbutton _("Помощь") action [Play("sound", "music/click4.ogg"), ShowMenu("help") ]
 
         if renpy.variant("pc"):
 
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
-            textbutton _("Выход") action Quit(confirm=not main_menu)
+            textbutton _("Выход") action [Play("sound", "music/click5.ogg"), Quit(confirm=not main_menu) ]
 
 
 style navigation_button is gui_button
@@ -351,6 +392,8 @@ style navigation_button_text:
 ## Используется, чтобы показать главное меню после запуска игры.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
+
+#image main_menu = Movie(play="videos/rain.mp4")
 
 screen main_menu():
 
@@ -393,11 +436,18 @@ style main_menu_frame:
     background "gui/overlay/main_menu.png"
 
 style main_menu_vbox:
-    xalign 1.0
+    xalign 0.07
     xoffset -30
     xmaximum 1200
-    yalign 1.0
+    yalign 0.4
     yoffset -30
+
+style main_menu_version:
+    xalign 1.0
+    xoffset 1200
+    xsize 960
+    yalign 1.0
+    yoffset 550
 
 style main_menu_text:
     properties gui.text_properties("main_menu", accent=True)
@@ -477,7 +527,7 @@ screen game_menu(title, scroll=None, yinitial=0.0):
     textbutton _("Вернуться"):
         style "return_button"
 
-        action Return()
+        action [Play("sound", "music/click6.ogg"), Return() ]
 
     label title
 
@@ -584,7 +634,7 @@ style about_label_text:
 ## как они почти одинаковые, оба реализованы по правилам третьего экрана —
 ## file_slots.
 ##
-## https://www.renpy.org/doc/html/screen_special.html#save 
+## https://www.renpy.org/doc/html/screen_special.html#save
 
 screen save():
 
@@ -662,19 +712,19 @@ screen file_slots(title):
 
                 spacing gui.page_spacing
 
-                textbutton _("<") action FilePagePrevious()
+                #textbutton _("<") action FilePagePrevious()
 
-                if config.has_autosave:
-                    textbutton _("{#auto_page}А") action FilePage("auto")
+                #if config.has_autosave:
+                #    textbutton _("{#auto_page}А") action FilePage("auto")
 
-                if config.has_quicksave:
-                    textbutton _("{#quick_page}Б") action FilePage("quick")
+                #if config.has_quicksave:
+                #    textbutton _("{#quick_page}Б") action FilePage("quick")
 
                 ## range(1, 10) задаёт диапазон значений от 1 до 9.
                 for page in range(1, 10):
                     textbutton "[page]" action FilePage(page)
 
-                textbutton _(">") action FilePageNext()
+                #textbutton _(">") action FilePageNext()
 
 
 style page_label is gui_label
@@ -734,19 +784,20 @@ screen preferences():
                         textbutton _("Оконный") action Preference("display", "window")
                         textbutton _("Полный") action Preference("display", "fullscreen")
 
-                vbox:
-                    style_prefix "radio"
-                    label _("Сторона отката")
-                    textbutton _("Отключено") action Preference("rollback side", "disable")
-                    textbutton _("Левая") action Preference("rollback side", "left")
-                    textbutton _("Правая") action Preference("rollback side", "right")
+                #vbox:
+                    #style_prefix "radio"
+                    #label _("Сторона отката")
+                    #textbutton _("Отключено") action Preference("rollback side", "disable")
+                    #textbutton _("Левая") action Preference("rollback side", "left")
+                    #textbutton _("Правая") action Preference("rollback side", "right")
 
                 vbox:
                     style_prefix "check"
                     label _("Пропуск")
                     textbutton _("Всего текста") action Preference("skip", "toggle")
                     textbutton _("После выборов") action Preference("after choices", "toggle")
-                    textbutton _("Переходов") action InvertSelected(Preference("transitions", "toggle"))
+                    #textbutton _("Переходов") action InvertSelected(Preference("transitions", "toggle"))
+
 
                 ## Дополнительные vbox'ы типа "radio_pref" или "check_pref"
                 ## могут быть добавлены сюда для добавления новых настроек.
@@ -786,16 +837,16 @@ screen preferences():
                                 textbutton _("Тест") action Play("sound", config.sample_sound)
 
 
-                    if config.has_voice:
-                        label _("Громкость голоса")
+                    #if config.has_voice:
+                        #label _("Громкость голоса")
 
-                        hbox:
-                            bar value Preference("voice volume")
+                        #hbox:
+                            #bar value Preference("voice volume")
 
-                            if config.sample_voice:
+                            #if config.sample_voice:
                                 textbutton _("Тест") action Play("voice", config.sample_voice)
 
-                    if config.has_music or config.has_sound or config.has_voice:
+                    #if config.has_music or config.has_sound or config.has_voice:
                         null height gui.pref_spacing
 
                         textbutton _("Без звука"):
@@ -988,21 +1039,50 @@ screen help():
 
             hbox:
 
-                textbutton _("Клавиатура") action SetScreenVariable("device", "keyboard")
-                textbutton _("Мышь") action SetScreenVariable("device", "mouse")
+                textbutton _("Характеристики") action SetScreenVariable("device", "keyboard")
+                textbutton _("Управление") action SetScreenVariable("device", "mouse")
+
 
                 if GamepadExists():
                     textbutton _("Геймпад") action SetScreenVariable("device", "gamepad")
 
             if device == "keyboard":
-                use keyboard_help
+                use help_heroes
             elif device == "mouse":
                 use mouse_help
             elif device == "gamepad":
                 use gamepad_help
 
 
-screen keyboard_help():
+
+screen help_heroes():
+
+    hbox:
+        label _("Mirai")
+        text _("Имя: Мирай, возраст: 17, хобби: музыкант, характер: флегматик")
+
+    hbox:
+        label _("Rei")
+        text _("Имя: Рэй, возраст: 17, хобби: косплей, характер: меланхолик")
+
+    hbox:
+        label _("Noi")
+        text _("Имя: Ной, возраст: 16, хобби: музыкант, характер: холерик")
+
+    hbox:
+        label _("Kirari")
+        text _("Имя: Кирари, возраст: 18, хобби: активистка, характер: холерик")
+
+    hbox:
+        label _("MrKei")
+        text _("Имя: Мистер Кей, возраст: 43, хобби: часовщик, характер: сангвиник")
+
+    hbox:
+        label _("Meri")
+        text _("Имя: Мэри, возраст: 35, хобби: готовка, характер: меланхолик")
+
+
+screen mouse_help():
 
     hbox:
         label _("Enter")
@@ -1025,10 +1105,6 @@ screen keyboard_help():
         text _("Пропускает диалоги, пока зажат.")
 
     hbox:
-        label _("Tab")
-        text _("Включает режим пропуска.")
-
-    hbox:
         label _("Page Up")
         text _("Откат назад по сюжету игры.")
 
@@ -1048,8 +1124,8 @@ screen keyboard_help():
         label "V"
         text _("Включает поддерживаемый {a=https://www.renpy.org/l/voicing}синтезатор речи{/a}.")
 
-
-screen mouse_help():
+    hbox:
+        text _("----------------------------------Управление мышью----------------------------------")
 
     hbox:
         label _("Левый клик")
@@ -1164,8 +1240,8 @@ screen confirm(message, yes_action, no_action):
                 xalign 0.5
                 spacing 150
 
-                textbutton _("Да") action yes_action
-                textbutton _("Нет") action no_action
+                textbutton _("Да") action [Play("sound", "music/click4.ogg"), yes_action ]
+                textbutton _("Нет") action [Play("sound", "music/click3.ogg"), no_action ]
 
     ## Правый клик и esc, как ответ "Нет".
     key "game_menu" action no_action
