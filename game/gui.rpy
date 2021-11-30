@@ -59,19 +59,19 @@ define gui.label_text_color = '#d7d3dd'
 ## Шрифты и их размеры #########################################################
 
 ## Шрифт, используемый внутриигровым текстом.
-define gui.text_font = "/fonts/roboto.ttf"
+define gui.text_font = "/fonts/noto-sans-regular.ttf"
 
 ## Шрифт, используемый именами персонажей.
-define gui.name_text_font = "/fonts/roboto.ttf"
+define gui.name_text_font = "/fonts/noto-sans-bold.ttf"
 
 ## Шрифт, используемый текстом вне игры.
-define gui.interface_text_font = "/fonts/roboto.ttf"
+define gui.interface_text_font = "/fonts/noto-sans-regular.ttf"
 
 ## Размер нормального текста диалога.
-define gui.text_size = 30
+define gui.text_size = 37
 
 ## Размер имён персонажей.
-define gui.name_text_size = 45
+define gui.name_text_size = 55
 
 ## Размер текста в пользовательском интерфейсе.
 define gui.interface_text_size = 35
@@ -107,8 +107,8 @@ define gui.textbox_yalign = 1.0
 ## Местоположение имени говорящего персонажа по отношению к текстовому окну.
 ## Это могут быть целые значения в пикселях слева и сверху от начала окна или
 ## процентное отношение, например, 0.5 для центрирования.
-define gui.name_xpos = 0.776
-define gui.name_ypos = -0.17
+define gui.name_xpos = 0.765
+define gui.name_ypos = -0.23
 
 ## Горизонтальное выравнивание имени персонажа. Это может быть 0.0 для
 ## левоориентированного, 0.5 для центрированного и 1.0 для правоориентированного
@@ -268,10 +268,10 @@ define gui.choice_spacing = 33
 define gui.navigation_spacing = 0
 
 ## Контролирует интервал между настройками.
-define gui.pref_spacing = 15
+define gui.pref_spacing = 20
 
 ## Контролирует интервал между кнопками настройки.
-define gui.pref_button_spacing = 0
+define gui.pref_button_spacing = 5
 
 ## Интервал между кнопками страниц.
 define gui.page_spacing = 0
